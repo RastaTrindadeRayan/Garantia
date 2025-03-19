@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Notas de Garantia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Gerador de Notas de Garantia</h1>
+    <form onsubmit="event.preventDefault(); gerarPDF();">
+        <label for="cliente">Cliente:</label>
+        <input type="text" id="cliente" required>
+
+        <label for="produto">Produto:</label>
+        <input type="text" id="produto" required>
+
+        <label for="dataCompra">Data da Compra:</label>
+        <input type="date" id="dataCompra" required>
+
+        <label for="validade">Validade da Garantia:</label>
+        <input type="text" id="validade" required>
+
+        <label for="numeroSerie">Número de Série:</label>
+        <input type="text" id="numeroSerie">
+
+        <label for="imei">IMEI:</label>
+        <input type="text" id="imei">
+
+        <label for="termos">Termos e Condições:</label>
+        <textarea id="termos" rows="4" required></textarea>
+
+        <label for="contato">Contato para Suporte:</label>
+        <input type="text" id="contato" required>
+
+        <button type="submit">Gerar Nota de Garantia</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
