@@ -2,23 +2,31 @@ async function gerarPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    const cliente = document.getElementById('cliente').value;
-    const produto = document.getElementById('produto').value;
-    const dataCompra = document.getElementById('dataCompra').value;
-    const validade = document.getElementById('validade').value;
-    const numeroSerie = document.getElementById('numeroSerie').value || 'N/A';
-    const imei = document.getElementById('imei').value || 'N/A';
-    const termos = document.getElementById('termos').value;
-    const contato = document.getElementById('contato').value;
+    function sanitize(input) {
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' };
+        const reg = /[&<>"']/g;
+        return input.replace(reg, (match) => map[match]);
+    }
+
+    const cliente = sanitize(document.getElementById('cliente').value.trim());
+    const produto = sanitize(document.getElementById('produto').value.trim());
+    const dataCompra = sanitize(document.getElementById('dataCompra').value.trim());
+    const validade = sanitize(document.getElementById('validade').value.trim());
+    const numeroSerie = sanitize(document.getElementById('numeroSerie').value.trim()) || 'N/A';
+    const imei = sanitize(document.getElementById('imei').value.trim()) || 'N/A';
+    const termos = sanitize(document.getElementById('termos').value.trim());
+    const contato = sanitize(document.getElementById('contato').value.trim());
 
     const dataAtual = new Date();
     const dataImpressao = `${dataAtual.toLocaleDateString()} ${dataAtual.toLocaleTimeString()}`;
 
+    // Validação mais rigorosa
     if (!cliente || !produto || !dataCompra || !validade || !termos || !contato) {
         alert('Por favor, preencha todos os campos obrigatórios.');
         return;
     }
 
+    // PDF Content
     doc.setFontSize(22);
     doc.setTextColor(0, 102, 204);
     doc.text("Nota de Garantia", 10, 20);
@@ -54,5 +62,6 @@ async function gerarPDF() {
     doc.setFontSize(10);
     doc.text(`Nota impressa em: ${dataImpressao}`, 10, 210);
 
-    doc.save(`NotaGarantia_${cliente}.pdf`);
+    const nomeArquivo = `NotaGarantia_${cliente.replace(/\s+/g, '_')}.pdf`;
+    doc.save(nomeArquivo);
 }
